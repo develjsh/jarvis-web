@@ -1,0 +1,231 @@
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  cursor: pointer;
+  z-index: 999;
+  transition: opacity 0.6s ease;
+}
+
+#splash.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#splash-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 28px;
+  letter-spacing: 12px;
+  color: #4af;
+  text-transform: uppercase;
+}
+
+#splash-hint {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #333;
+  text-transform: uppercase;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { color: #333; }
+  50% { color: #555; }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#orb-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
+}
+
+#status-text {
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #555;
+  pointer-events: none;
+  transition: color 0.4s ease;
+  user-select: none;
+}
+
+#status-text.listening { color: #4af; }
+#status-text.thinking  { color: #fa0; }
+#status-text.speaking  { color: #4f8; }
+#status-text.error     { color: #f44; }
+
+#response-text {
+  display: none;
+}
+
+#transcript-text {
+  position: fixed;
+  bottom: 90px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #4af;
+  pointer-events: none;
+  user-select: none;
+  min-height: 20px;
+}
+
+#action-text {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 170, 255, 0.1);
+  border: 1px solid rgba(0, 170, 255, 0.3);
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 12px;
+  color: #4af;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+  max-width: 80vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#action-text.visible {
+  opacity: 1;
+}
+
+/* Settings button */
+#settings-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #555;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+  font-family: inherit;
+  z-index: 100;
+}
+
+#settings-btn:hover {
+  color: #aaa;
+  border-color: #555;
+}
+
+/* Settings panel */
+#settings-panel {
+  position: fixed;
+  top: 54px;
+  right: 20px;
+  background: rgba(10, 10, 10, 0.95);
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 20px;
+  width: 280px;
+  z-index: 200;
+  font-size: 12px;
+}
+
+#settings-panel.hidden {
+  display: none;
+}
+
+#settings-panel h3 {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.setting-row {
+  margin-bottom: 12px;
+}
+
+.setting-row label {
+  display: block;
+  color: #666;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.setting-row input {
+  width: 100%;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #ccc;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 6px 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.setting-row input:focus {
+  border-color: #4af;
+}
+
+.setting-row input[type="range"] {
+  padding: 0;
+  cursor: pointer;
+  accent-color: #4af;
+}
+
+.settings-save {
+  margin-top: 16px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #4af;
+  border-radius: 4px;
+  color: #4af;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.settings-save:hover {
+  background: rgba(0, 170, 255, 0.1);
+}
