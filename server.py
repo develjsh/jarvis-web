@@ -56,7 +56,7 @@ Known facts about the user:
 You have these capabilities. Use action tags only when genuinely needed, \
 at most one per response:
 
-[ACTION:SEARCH:your search query]   – Search the web
+[ACTION:SEARCH:your search query]   – Search the web for real-time info
 [ACTION:BROWSE:https://url.com]     – Visit a URL and extract content
 [ACTION:TERMINAL:optional command]  – Open Terminal
 [ACTION:CHROME:https://url.com]     – Open URL in Chrome
@@ -68,6 +68,8 @@ at most one per response:
 [ACTION:TASKS]                      – List current tasks
 [ACTION:TASK_DONE:id]               – Mark task as done
 
+For real-time information (weather, news, stock prices, sports scores, etc.) \
+always use [ACTION:SEARCH:...] — do not guess or fabricate current data.
 Never fabricate action results. If you are unsure, say so.\
 """
 
@@ -523,11 +525,17 @@ async def ws_voice(ws: WebSocket) -> None:
                         contents=contents,
                         config=genai_types.GenerateContentConfig(
                             system_instruction=_build_system_prompt(),
-                            max_output_tokens=250,
+                            max_output_tokens=512,
                             temperature=0.7,
+                            thinking_config=genai_types.ThinkingConfig(
+                                thinking_budget=0,
+                            ),
                         ),
                     )
-                    response_text = gemini_resp.text
+                    response_text = gemini_resp.text or ""
+                    if not response_text:
+                        print("[WARN] Gemini returned empty response")
+                        response_text = "I'm sorry, I didn't quite catch that. Could you say that again?"
 
                 # ── Parse & dispatch actions ───────────────────────────────
                 clean_text, actions = await _parse_and_dispatch(
@@ -566,7 +574,9 @@ async def ws_voice(ws: WebSocket) -> None:
                 await _speak(clean_text, send)
 
             except Exception as exc:
-                print(f"[ERROR] {exc}")
+                import traceback
+                print(f"[ERROR] {type(exc).__name__}: {exc}")
+                traceback.print_exc()
                 err_msg = "I'm sorry, sir. I'm having trouble connecting. Please try again."
                 await _speak(err_msg, send)
                 await send({"type": "error", "message": str(exc)})
